@@ -1,3 +1,5 @@
+import kotlin.math.min
+
 fun main() {
     val name = "Madrigal"
     var healthPoints = 89
@@ -26,11 +28,8 @@ private fun printPlayerStatus(
     println("$name $healthStatus")
 }
 
-private fun auraColor(isBlessed: Boolean, healthPoints: Int, isImmortal: Boolean): String {
-    val auraVisible = isBlessed && healthPoints > 50 || isImmortal
-    val auraColor = if (auraVisible) "GREEN" else "NONE"
-    return auraColor
-}
+private fun auraColor(isBlessed: Boolean, healthPoints: Int, isImmortal: Boolean) =
+    if (isBlessed && healthPoints > 50 || isImmortal) "GREEN" else "NONE"
 
 private fun formatHealthStatus(healthPoints: Int, isBlessed: Boolean) =
     when (healthPoints) {
@@ -46,5 +45,15 @@ private fun formatHealthStatus(healthPoints: Int, isBlessed: Boolean) =
     }
 
 
-private fun castFireball(numFireballs: Int = 2) =
-    println("A glass of Fireball springs into existence. (x$numFireballs)")
+private fun castFireball(numFireballs: Int = 2): Int {
+    val inebriation = (min(numFireballs * 10, 50))
+    val inebriationDisplay = when (inebriation) {
+        in 1..10  -> "tipsy"
+        in 11..20 -> "sloshed"
+        in 21..30 -> "soused"
+        in 31..40 -> "stewed"
+        else      -> "..toaSt3d"
+    }
+    println("A glass of Fireball springs into existence. (x$numFireballs) \nYou are now $inebriationDisplay")
+    return inebriation
+}
