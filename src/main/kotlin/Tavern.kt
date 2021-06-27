@@ -3,11 +3,12 @@ import kotlin.math.roundToInt
 const val TAVERN_NAME = "Taernyl's Folly"
 const val PINT = 0.125
 
-var playerGold = 10
-var playerSilver = 10
+var playerGold = 7
+var playerSilver = 80
 var cask = 5.0
 
 fun main() {
+    placeOrder("shandy,Dragon's Breath,5.91")
     placeOrder("shandy,Dragon's Breath,5.91")
 }
 
@@ -54,20 +55,27 @@ private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[aeiou]")) {
 fun placeOrder(menuData: String) {
     val indexOfApostrophe = TAVERN_NAME.indexOf('\'')
     val tavernMaster = TAVERN_NAME.substring(0 until indexOfApostrophe)
+    var totalPurse = playerGold + playerSilver / 100.0
     println("Madrigal speaks with $tavernMaster about their order.")
 
     val (type, name, price) = menuData.split(',')
-    val message = "Madrigal buys a $name ($type) for $price."
-    println(message)
 
-    performPurchase(price.toDouble())
-
-    val phrase = if (name == "Dragon's Breath") {
-        "Madrigal exclaims: ${toDragonSpeak("Ah, delicious $name!")}"
+    if (price.toDouble() > totalPurse) {
+        println("$tavernMaster says: Sorry but you are too short on gold for that drink.")
     } else {
-        "Madrigal says: Thanks for the $name."
+        val message = "Madrigal buys a $name ($type) for $price."
+        println(message)
+
+        performPurchase(price.toDouble())
+
+        val phrase = if (name == "Dragon's Breath") {
+            "Madrigal exclaims: ${toDragonSpeak("Ah, delicious $name!")}"
+        } else {
+            "Madrigal says: Thanks for the $name."
+        }
+        println(phrase)
     }
-    println(phrase)
+
 }
 
 fun getCaskBalance(order: Double) {
