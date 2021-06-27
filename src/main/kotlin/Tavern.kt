@@ -1,9 +1,11 @@
 import kotlin.math.roundToInt
 
 const val TAVERN_NAME = "Taernyl's Folly"
+const val PINT = 0.125
 
 var playerGold = 10
 var playerSilver = 10
+var cask = 5.0
 
 fun main() {
     placeOrder("shandy,Dragon's Breath,5.91")
@@ -23,6 +25,15 @@ fun performPurchase(price: Double) {
     playerGold = remainingGold
     playerSilver = remainingSilver
     displayBalance()
+
+    var order = 12 * PINT
+
+    getCaskBalance(order)
+    displayCask()
+}
+
+fun displayCask() {
+    println("Tavern's cask balance: $cask gallons")
 }
 
 fun displayBalance() {
@@ -57,4 +68,8 @@ fun placeOrder(menuData: String) {
         "Madrigal says: Thanks for the $name."
     }
     println(phrase)
+}
+
+fun getCaskBalance(order: Double) {
+    cask -= order
 }
