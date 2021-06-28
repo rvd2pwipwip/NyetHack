@@ -1,10 +1,10 @@
-import kotlin.math.roundToInt
+
 
 const val TAVERN_NAME = "Taernyl's Folly"
 const val PINT = 0.125
+const val DRAGON_COIN_RATE = 1.43
 
-var playerGold = 7
-var playerSilver = 80
+var playerDragonCoin = 5.0
 var cask = 5.0
 
 fun main() {
@@ -14,17 +14,16 @@ fun main() {
 
 fun performPurchase(price: Double) {
     displayBalance()
-    val totalPurse = playerGold + playerSilver / 100.0
+
+    val totalPurse = (playerDragonCoin * DRAGON_COIN_RATE)
+
     println("Total purse: $totalPurse")
     println("Purchasing item for $price")
 
-    val remainingBalance = totalPurse - price
-    println("Remaining balance: ${"%.2f".format(remainingBalance)}")
+    val remainingBalance = (totalPurse - price) / 1.43
+    println("Remaining balance: ${"%.4f".format(remainingBalance)}")
 
-    val remainingGold = remainingBalance.toInt()
-    val remainingSilver = (remainingBalance % 1 * 100).roundToInt()
-    playerGold = remainingGold
-    playerSilver = remainingSilver
+    playerDragonCoin = remainingBalance
     displayBalance()
 
     var order = 12 * PINT
@@ -38,7 +37,7 @@ fun displayCask() {
 }
 
 fun displayBalance() {
-    println("Player's purse balance: Gold: $playerGold , Silver: $playerSilver")
+    println("Player's purse balance: Dragoncoin: ${"%.4f".format(playerDragonCoin)}")
 }
 
 private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[aeiou]")) {
@@ -55,8 +54,9 @@ private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[aeiou]")) {
 fun placeOrder(menuData: String) {
     val indexOfApostrophe = TAVERN_NAME.indexOf('\'')
     val tavernMaster = TAVERN_NAME.substring(0 until indexOfApostrophe)
-    var totalPurse = playerGold + playerSilver / 100.0
+    val totalPurse = playerDragonCoin * DRAGON_COIN_RATE
     println("Madrigal speaks with $tavernMaster about their order.")
+
 
     val (type, name, price) = menuData.split(',')
 
