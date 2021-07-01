@@ -1,4 +1,5 @@
 import java.io.File
+import java.util.*
 import kotlin.math.roundToInt
 
 const val TAVERN_NAME = "Taernyl's Folly"
@@ -31,11 +32,12 @@ fun main() {
     }
     println(uniquePatrons)
 
-    var orderCount = 0
-    while (orderCount <= 9) {
-        placeOrder(uniquePatrons.shuffled().first(), menuList.shuffled().first())
-        orderCount++
-    }
+//    var orderCount = 0
+//    while (orderCount <= 9) {
+//        placeOrder(uniquePatrons.shuffled().first(), menuList.shuffled().first())
+//        orderCount++
+//    }
+    printMenu(menuList)
 }
 
 fun performPurchase(price: Double) {
@@ -86,4 +88,36 @@ fun placeOrder(patronName: String, menuData: String) {
         "$patronName says: Thanks for the $name."
     }
     println(phrase)
+}
+
+fun printMenu(menu: List<String>) {
+//    var itemNames = listOf<String>()
+//    menu.forEach { item ->
+//        itemNames += item.split(',')[1]
+//    }
+//    val longest = itemNames.maxByOrNull { it.length }
+
+    val menuTitle = "*** Welcome to $TAVERN_NAME ***"
+    val colWidth = menuTitle.length + 1
+
+    var categories = setOf<String>()
+    menu.forEach {
+        categories += it.split(',')[0]
+    }
+
+    println(menuTitle)
+    categories.forEach { category ->
+        println(" ".repeat(((colWidth - category.length) - 4) / 2) + "-[$category]-")
+        menu.forEach {
+            if (it.split(',')[0] == category) {
+                val (_, name, price) = it.split(',')
+                val nameWords = name.split(' ').toList()
+                var capitalized = ""
+                nameWords.forEach { word ->
+                    capitalized += word.replaceFirstChar { if (it.isLowerCase() && word != "of") it.titlecase() else it.toString() } + " "
+                }
+                println(capitalized.trim() + ".".repeat(colWidth - capitalized.length - price.length) + price)
+            }
+        }
+    }
 }
