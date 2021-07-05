@@ -9,17 +9,17 @@ val menuList = File("data/tavern-menu-items.txt").readText().split("\n")
 val patronGold = mutableMapOf<String, Double>()
 
 fun main() {
-    if (patronList.contains("Eli")) {
-        println("The tavern master says: Eli's in the back playing cards. ")
-    } else {
-        println("The tavern master says: Eli isn't here.")
-    }
-
-    if (patronList.containsAll(listOf("Sophie", "Mordoc"))) {
-        println("The tavern master says: Yea, they're seated by the stew kettle.")
-    } else {
-        println("The tavern master says: Nay, they departed hours ago.")
-    }
+//    if (patronList.contains("Eli")) {
+//        println("The tavern master says: Eli's in the back playing cards. ")
+//    } else {
+//        println("The tavern master says: Eli isn't here.")
+//    }
+//
+//    if (patronList.containsAll(listOf("Sophie", "Mordoc"))) {
+//        println("The tavern master says: Yea, they're seated by the stew kettle.")
+//    } else {
+//        println("The tavern master says: Nay, they departed hours ago.")
+//    }
 
     (0..9).forEach {
         val first = patronList.shuffled().first()
@@ -42,9 +42,17 @@ fun main() {
 }
 
 fun displayPatronBalances() {
+    var kickedOutPatrons = mutableSetOf<String>()
     patronGold.forEach { patron, balance ->
-        println("$patron, balance: ${"%.2f".format(balance)}")
+        if (balance <= 0) {
+            println("$patron was kicked out for lack of gold")
+            kickedOutPatrons += patron
+        } else {
+            println("$patron, balance: ${"%.2f".format(balance)}")
+        }
     }
+    uniquePatrons.removeAll(kickedOutPatrons)
+    println(uniquePatrons)
 }
 
 fun performPurchase(price: Double, patronName: String) {
