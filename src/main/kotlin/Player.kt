@@ -1,15 +1,32 @@
+import java.io.File
 import java.util.*
 
-class Player {
-    var name = "madrigal"
-        get() = field.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+class Player(
+    _name: String,
+    var healthPoints: Int = 100,
+    val isBlessed: Boolean,
+    private val isImmortal: Boolean
+) {
+    var name = _name
+        get() = "${field.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} of $hometown"
         private set(value) {
             field = value.trim()
         }
 
-    var healthPoints = 89
-    var isBlessed = true
-    private val isImmortal = false
+    val hometown = lazy { selectHometown() }
+
+    init {
+        require(healthPoints > 0) { "healthPoints must be greater than zero." }
+        require(name.isNotBlank()) {"Player must have a name."}
+    }
+
+    constructor(name: String) : this(
+        name,
+        isBlessed = true,
+        isImmortal = false
+    ) {
+        if (name.lowercase() =="kar") healthPoints = 40
+    }
 
     fun auraColor(): String {
         val auraVisible = isBlessed && healthPoints > 50 || isImmortal
@@ -32,4 +49,10 @@ class Player {
 
     fun castFireball(numFireballs: Int = 2) =
         println("A glass of Fireball springs into existence. (x$numFireballs)")
+
+    private fun selectHometown() = File("data/towns.txt")
+        .readText()
+        .split("\n")
+        .shuffled()
+        .first()
 }
