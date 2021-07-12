@@ -1,7 +1,9 @@
 open class Room(val name: String) {
     protected open val dangerLevel = 5
+    var monster: Monster? = Goblin()
 
-    fun description() = "Room: $name\nDanger level: $dangerLevel"
+    fun description() = "Room: $name\nDanger level: $dangerLevel\n" +
+        "Creature: ${monster?.description ?: "none."}"
 
     open fun load() = "Nothing much to see here..."
 }

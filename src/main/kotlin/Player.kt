@@ -3,10 +3,10 @@ import java.util.*
 
 class Player(
     _name: String,
-    var healthPoints: Int = 100,
+    override var healthPoints: Int = 100,
     val isBlessed: Boolean,
     private val isImmortal: Boolean
-) {
+): Fightable {
     var name = _name
         get() = "${field.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} of $hometown"
         private set(value) {
@@ -15,6 +15,19 @@ class Player(
 
     val hometown by lazy { selectHometown() }
     var currentPosition = Coordinate(0, 0)
+
+    override val diceCount = 3
+    override val diceSides = 6
+
+    override fun attack(opponent: Fightable): Int {
+        val damageDealt = if (isBlessed) {
+            damageRoll * 2
+        } else {
+            damageRoll
+        }
+        opponent.healthPoints -= damageDealt
+        return damageDealt
+    }
 
     init {
         require(healthPoints > 0) { "healthPoints must be greater than zero." }
