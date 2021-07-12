@@ -51,6 +51,7 @@ object Game {
                 playInProgress = false
                 "Farewell..."
             }
+            "ring"  -> ring()
             "map"          -> map()
             "move"         -> move(argument)
             else           -> commandNotFound()
@@ -84,5 +85,9 @@ object Game {
             mapString += "\n"
         }
         return mapString.trim()
+    }
+
+    fun ring() = currentRoom.let {
+        if (it is TownSquare) it.ringBell() else "No bell to ring here."
     }
 }
