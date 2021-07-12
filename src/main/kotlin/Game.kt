@@ -7,6 +7,7 @@ fun main() {
 }
 
 object Game {
+    private var playInProgress = true
     private val player = Player("Madrigal")
     private var currentRoom: Room = TownSquare()
 
@@ -21,7 +22,7 @@ object Game {
     }
 
     fun play() {
-        while (true) {
+        while (playInProgress) {
             println(currentRoom.description())
             println(currentRoom.load())
             // Aura
@@ -46,8 +47,13 @@ object Game {
         val argument = input.split(" ").getOrElse(1) { "" }
 
         fun processCommand() = when (command.lowercase()) {
-            "move" -> move(argument)
-            else -> commandNotFound()
+            "quit", "exit" -> {
+                playInProgress = false
+                "Farewell..."
+            }
+            "map"          -> map()
+            "move"         -> move(argument)
+            else           -> commandNotFound()
         }
 
         private fun commandNotFound() = "I'm not quite sure what you're trying to do!"
@@ -68,4 +74,15 @@ object Game {
         } catch (e: Exception) {
             "Invalid direction: $directionInput."
         }
+
+    fun map(): String {
+        var mapString = ""
+        worldMap.forEach {
+            it.forEach { room ->
+                mapString += if (room == currentRoom) "x " else "o "
+            }
+            mapString += "\n"
+        }
+        return mapString.trim()
+    }
 }
