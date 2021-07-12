@@ -51,7 +51,7 @@ object Game {
                 playInProgress = false
                 "Farewell..."
             }
-            "ring"  -> ring()
+            "ring"         -> ring()
             "map"          -> map()
             "move"         -> move(argument)
             else           -> commandNotFound()
