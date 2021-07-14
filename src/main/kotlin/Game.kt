@@ -1,4 +1,4 @@
-import java.util.*
+import extensions.*
 import kotlin.system.exitProcess
 
 fun main() {
@@ -17,7 +17,7 @@ object Game {
     )
 
     init {
-        println("Welcome, adventurer.")
+        println("Welcome, ${player.name}".addEnthusiasm(3).frame(5))
         player.castFireball()
     }
 
