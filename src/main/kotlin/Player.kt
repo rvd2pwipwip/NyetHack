@@ -1,5 +1,5 @@
+import extensions.random
 import java.io.File
-import java.util.*
 
 class Player(
     _name: String,
@@ -67,6 +67,5 @@ class Player(
     private fun selectHometown() = File("data/towns.txt")
         .readText()
         .split("\n")
-        .shuffled()
-        .first()
+        .random()
 }
